@@ -1,0 +1,13 @@
+﻿Bezirk,Total_listings,Avg_Rent_m2,Avg_Area_m2,Avg_Transit_Distance,Undervalued ,Gap_From_Top
+Mitte,2190,18.32,81.3,35,Normal,0.40
+Friedrichshain-Kreuzberg,786,18.72,83.8,37,Normal,0.00
+Pankow,2929,12.14,71.6,103,Undervalued ✓,6.58
+Charlottenburg-Wilmersdorf,2573,17.83,86.5,46,Normal,0.89
+Spandau,2639,8.37,70.7,101,Undervalued ✓,10.35
+Steglitz-Zehlendorf,2514,16.76,85.2,55,Normal,1.96
+Tempelhof-Schöneberg,2173,12.38,81.1,74,Normal,6.34
+Neukölln,1840,10.03,67.7,32,Normal,8.69
+Treptow-Köpenick,3510,11.15,74.6,140,Undervalued ✓,7.57
+Marzahn-Hellersdorf,1826,6.80,66.8,163,Normal,11.92
+Lichtenberg,2894,9.01,68.7,109,Undervalued ✓,9.71
+Reinickendorf,4124,9.75,74.3,102,Undervalued ✓,8.97
