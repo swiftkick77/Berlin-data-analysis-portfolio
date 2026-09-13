@@ -1,0 +1,100 @@
+-- Berlin Rental Market Analysis
+-- Analyst: David Tasarz
+-- Date: September 2026
+-- Tools: SQLite / DB Browser
+
+-- ================================================
+-- QUERY 1: Most listings by bezirk
+-- ================================================
+SELECT
+  bezirk,
+  COUNT(*) AS total_listings,
+  ROUND(AVG(rent_per_m2_kalt_eur), 2) AS avg_rent_m2
+FROM rentals
+GROUP BY bezirk
+ORDER BY total_listings DESC;
+
+-- ================================================
+-- QUERY 2: Highest avg rent per m² by bezirk
+-- ================================================
+SELECT
+  bezirk,
+  ROUND(AVG(rent_per_m2_kalt_eur), 2) AS avg_rent_m2,
+  COUNT(*) AS total_listings
+FROM rentals
+GROUP BY bezirk
+ORDER BY avg_rent_m2 DESC;
+
+-- ================================================
+-- QUERY 3: Berlin overall average rent
+-- ================================================
+SELECT
+  ROUND(AVG(rent_per_m2_kalt_eur), 2) AS berlin_avg_rent_m2,
+  ROUND(MIN(rent_per_m2_kalt_eur), 2) AS lowest_rent_m2,
+  ROUND(MAX(rent_per_m2_kalt_eur), 2) AS highest_rent_m2
+FROM rentals;
+
+-- ================================================
+-- QUERY 4: Price gap between districts
+-- ================================================
+SELECT
+  ROUND(MAX(avg_rent_m2) - MIN(avg_rent_m2), 2) AS price_gap,
+  MAX(avg_rent_m2) AS most_expensive_m2,
+  MIN(avg_rent_m2) AS most_affordable_m2
+FROM (
+  SELECT
+    bezirk,
+    ROUND(AVG(rent_per_m2_kalt_eur), 2) AS avg_rent_m2
+  FROM rentals
+  GROUP BY bezirk
+);
+
+-- ================================================
+-- QUERY 5: Fastest growing districts
+-- ================================================
+SELECT
+  bezirk,
+  avg_rent_2023,
+  avg_rent_2025,
+  yoy_change_pct,
+  fastest_growing
+FROM rent_growth
+ORDER BY yoy_change_pct DESC;
+
+-- ================================================
+-- QUERY 6: Undervalued districts
+-- ================================================
+SELECT
+  bezirk,
+  total_listings,
+  avg_rent_m2,
+  undervalued
+FROM district_summary
+WHERE undervalued = 'Undervalued ✓'
+ORDER BY total_listings DESC;
+
+-- ================================================
+-- QUERY 7: Transit proximity vs rent
+-- ================================================
+SELECT
+  CASE
+    WHEN transit_distance_min < 5 THEN 'Under 5 mins'
+    WHEN transit_distance_min BETWEEN 5 AND 15 THEN '5 to 15 mins'
+    ELSE 'Over 15 mins'
+  END AS transit_zone,
+  ROUND(AVG(rent_per_m2_kalt_eur), 2) AS avg_rent_m2,
+  COUNT(*) AS total_listings
+FROM rentals
+GROUP BY transit_zone
+ORDER BY avg_rent_m2 DESC;
+
+-- ================================================
+-- QUERY 8: Brandenburg Gate distance vs rent
+-- ================================================
+SELECT
+  bezirk,
+  ROUND(AVG(to_brandenburg_gate_km), 2) AS avg_distance_km,
+  ROUND(AVG(rent_per_m2_kalt_eur), 2) AS avg_rent_m2
+FROM rentals
+GROUP BY bezirk
+ORDER BY avg_distance_km ASC;
